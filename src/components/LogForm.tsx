@@ -6,7 +6,7 @@ interface LogFormProps {
   onSubmit: (entry: { zoneId: string; type: 'In' | 'Out'; carCount: number }) => void;
 }
 
-const LogForm: React.FC<LogFormProps> = ({ zones, onSubmit }) => {
+const   LogForm: React.FC<LogFormProps> = ({ zones, onSubmit }) => {
   const [zoneId, setZoneId] = useState('');
   const [carCount, setCarCount] = useState(1);
 

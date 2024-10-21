@@ -20,9 +20,27 @@ const App: React.FC = () => {
   }, [parkingZones, logEntries]);
 
   const idMapping: { [key: string]: { carsIn: string; carsOut: string; capacity: string; availableSpace: string } } = {
-    Red: { carsIn: 'C2', carsOut: 'D2', capacity: 'B2', availableSpace: 'E2' },
-    Blue: { carsIn: 'C3', carsOut: 'D3', capacity: 'B3', availableSpace: 'E3' },
-    Pink: { carsIn: 'C4', carsOut: 'D4', capacity: 'B4', availableSpace: 'E4' },
+    Red_1: { carsIn: 'C2', carsOut: 'D2', capacity: 'B2', availableSpace: 'E2' },
+    Red_2: { carsIn: 'C3', carsOut: 'D3', capacity: 'B3', availableSpace: 'E3' },
+    Red_3: { carsIn: 'C4', carsOut: 'D4', capacity: 'B4', availableSpace: 'E4' },
+    Red_4: { carsIn: 'C5', carsOut: 'D5', capacity: 'B5', availableSpace: 'E5' },
+    Red_5: { carsIn: 'C6', carsOut: 'D6', capacity: 'B6', availableSpace: 'E6' },
+    Red_6: { carsIn: 'C7', carsOut: 'D7', capacity: 'B7', availableSpace: 'E7' },
+    Red_7: { carsIn: 'C8', carsOut: 'D8', capacity: 'B8', availableSpace: 'E8' },
+    VDA: { carsIn: 'C9', carsOut: 'D9', capacity: 'B9', availableSpace: 'E9' },
+    Gold_1: { carsIn: 'C10', carsOut: 'D10', capacity: 'B10', availableSpace: 'E10' },
+    Gold_2: { carsIn: 'C11', carsOut: 'D11', capacity: 'B11', availableSpace: 'E11' },
+    Gold_3: { carsIn: 'C12', carsOut: 'D12', capacity: 'B12', availableSpace: 'E12' },
+    Gold_4: { carsIn: 'C13', carsOut: 'D13', capacity: 'B13', availableSpace: 'E13' },
+    Gold_5: { carsIn: 'C14', carsOut: 'D14', capacity: 'B14', availableSpace: 'E14' },
+    Gold_6: { carsIn: 'C15', carsOut: 'D15', capacity: 'B15', availableSpace: 'E15' },
+    Silver1: { carsIn: 'C16', carsOut: 'D16', capacity: 'B16', availableSpace: 'E16' },
+    Silver2: { carsIn: 'C17', carsOut: 'D17', capacity: 'B17', availableSpace: 'E17' },
+    C37_staff: { carsIn: 'C18', carsOut: 'D18', capacity: 'B18', availableSpace: 'E18' },
+    EMSO: { carsIn: 'C19', carsOut: 'D19', capacity: 'B19', availableSpace: 'E19' },
+    YAM: { carsIn: 'C20', carsOut: 'D20', capacity: 'B20', availableSpace: 'E20' },
+    Dutch_Group: { carsIn: 'C21', carsOut: 'D21', capacity: 'B21', availableSpace: 'E21' },
+    Multi_Story: { carsIn: 'C22', carsOut: 'D22', capacity: 'B22', availableSpace: 'E22' },
   };
 
   const fetchSheetData = async () => {
@@ -74,8 +92,15 @@ const App: React.FC = () => {
     const carsOutCount = updatedZones.find((zone) => zone.name === entry.zoneId)?.carsOut || 0;
     const totalCapacity = updatedZones.find((zone) => zone.name === entry.zoneId)?.capacity || 100;
 
-    const newAvailableSpace = totalCapacity - (totalCars - carsOutCount);
+    let newAvailableSpace = 0;
+    if ((totalCapacity - (totalCars - carsOutCount)) > totalCapacity)
+      newAvailableSpace = totalCapacity;
+    else
+      newAvailableSpace = totalCapacity - (totalCars - carsOutCount);
+    if (newAvailableSpace < 0)
+        newAvailableSpace = totalCapacity;
 
+       
     try {
       console.log('Sending data to Google Sheets:', {
         zoneId: entry.zoneId,

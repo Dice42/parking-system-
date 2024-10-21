@@ -20,8 +20,10 @@ const ZoneTable: React.FC<ZoneTableProps> = ({ zones }) => {
         </thead>
         <tbody className="divide-y divide-gray-200">
           {zones.map((zone) => {
-            const availableSpaces = zone.capacity - (zone.carsIn - zone.carsOut);
-            const occupancyPercentage = ((zone.carsIn - zone.carsOut) / zone.capacity) * 100;
+            const carsParked = zone.carsIn - zone.carsOut;
+            const availableSpaces = zone.capacity - carsParked;
+            const occupancyPercentage = Math.min(100, (carsParked / zone.capacity) * 100);
+            
             return (
               <tr key={zone.id}>
                 <td className="px-4 py-2 whitespace-nowrap">{zone.name}</td>
@@ -29,12 +31,12 @@ const ZoneTable: React.FC<ZoneTableProps> = ({ zones }) => {
                 <td className="px-4 py-2 whitespace-nowrap">{zone.carsIn}</td>
                 <td className="px-4 py-2 whitespace-nowrap">{zone.carsOut}</td>
                 <td className="px-4 py-2 whitespace-nowrap">
-                  <div className={`font-semibold ${availableSpaces < 10 ? 'text-red-600' : 'text-green-600'}`}>
+                  <div className={`font-semibold ${availableSpaces < 0 ? 'text-red-600' : availableSpaces < 15 ? 'text-yellow-600' : 'text-green-600'}`}>
                     {availableSpaces}
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2.5 mt-1">
                     <div
-                      className="bg-blue-600 h-2.5 rounded-full"
+                      className={`h-2.5 rounded-full ${occupancyPercentage >= 100 ? 'bg-red-600' : 'bg-blue-600'}`}
                       style={{ width: `${occupancyPercentage}%` }}
                     ></div>
                   </div>
